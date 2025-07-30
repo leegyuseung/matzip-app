@@ -1,12 +1,9 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import AuthNavigation from './src/navigations/AuthNavigation';
+import {StyleSheet} from 'react-native';
 
 function App() {
-  return (
-    <View>
-      <Text>START</Text>
-    </View>
-  );
+  return <AuthNavigation />;
 }
 
 const styles = StyleSheet.create({});
