@@ -1,11 +1,8 @@
 import React from 'react';
-import AuthNavigation from './src/navigations/AuthNavigation';
-import {StyleSheet} from 'react-native';
+import RootNavigation from './src/navigations/RootNavigation';
 
 function App() {
-  return <AuthNavigation />;
+  return <RootNavigation />;
 }
-
-const styles = StyleSheet.create({});
 
 export default App;
