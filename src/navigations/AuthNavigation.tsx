@@ -1,9 +1,9 @@
-import AuthHomeScreen from '../screens/auth/AuthHomeScreen';
-import LoginScreen from '../screens/auth/LoginScreen';
-import SignupScreen from '../screens/auth/SignupScreen';
+import LoginScreen from '@/screens/auth/LoginScreen';
+import SignupScreen from '@/screens/auth/SignupScreen';
+import AuthHomeScreen from '@/screens/auth/AuthHomeScreen';
+import {colors} from '@/constants/colors';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createStaticNavigation} from '@react-navigation/native';
-import {colors} from '../constants/colors';
 
 const AuthStack = createStackNavigator({
   screenOptions: {

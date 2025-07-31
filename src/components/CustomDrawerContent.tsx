@@ -1,4 +1,5 @@
 import React from 'react';
+import {colors} from '@/constants/colors';
 import {
   Image,
   Pressable,
@@ -12,7 +13,6 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import {colors} from '../constants/colors';
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
   return (
@@ -25,7 +25,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
           <View style={styles.userImageContainer}>
             <Image
               style={styles.userImage}
-              source={require('../assets/default-user.png')}
+              source={require('@/assets/default-user.png')}
             />
           </View>
           <Text style={styles.nickname}>닉네임</Text>

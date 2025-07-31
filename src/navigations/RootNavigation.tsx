@@ -1,5 +1,5 @@
-import AuthNavigation from './AuthNavigation';
-import DrawerNavigation from './DrawerNavigation';
+import AuthNavigation from '@/navigations/AuthNavigation';
+import DrawerNavigation from '@/navigations/DrawerNavigation';
 
 function RootNavigation() {
   const isLogin = true;
