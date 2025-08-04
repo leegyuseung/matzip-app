@@ -1,16 +1,21 @@
-import React from 'react';
+import React, {Ref} from 'react';
 import {colors} from '@/constants/colors';
 import {StyleSheet, Text, TextInput, TextInputProps, View} from 'react-native';
 
 interface InputFieldProps extends TextInputProps {
+  ref?: Ref<TextInput>;
   error?: string;
   touched?: boolean;
 }
 
-function InputField({error, touched, ...props}: InputFieldProps) {
+function InputField({ref, error, touched, ...props}: InputFieldProps) {
   return (
     <View>
       <TextInput
+        ref={ref}
+        autoCapitalize="none" // 첫 글자 대문자
+        spellCheck={false} //  오타체크
+        autoCorrect={false} // 자동완성
         style={[styles.input, touched && Boolean(error) && styles.inputError]}
         {...props}
       />

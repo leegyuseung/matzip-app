@@ -1,16 +1,57 @@
-import React from 'react';
+import React, {useRef} from 'react';
+import useForm from '@/hooks/useForm';
 import InputField from '@/components/InputField';
 import CustomButton from '@/components/CustomButton';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {validateLogin} from '@/utils/validation';
+import {SafeAreaView, StyleSheet, TextInput, View} from 'react-native';
 
 function LoginScreen() {
+  const passwordRef = useRef<TextInput | null>(null);
+  const login = useForm({
+    initialValue: {
+      email: '',
+      password: '',
+    },
+    validate: validateLogin,
+  });
+
+  const handleSubmit = () => {
+    console.log('login.values', login.values);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
-        <InputField placeholder="이메일" error="이메일을 입력해주세요." />
-        <InputField placeholder="비밀번호" secureTextEntry />
+        <InputField
+          autoFocus
+          placeholder="이메일"
+          submitBehavior="submit" // 엔터를 눌러도 키보드 안없어진다
+          returnKeyType="next" // 엔터 키타입
+          inputMode="email" // 키보드 email 모드로 변경
+          onSubmitEditing={() => passwordRef.current?.focus()} // 엔터 눌렀을때 password Input으로 포커스 이동
+          touched={login.touched.email}
+          error={login.errors.email}
+          {...login.getTextInputProps('email')}
+        />
+        <InputField
+          ref={passwordRef}
+          placeholder="비밀번호"
+          returnKeyType="join"
+          secureTextEntry
+          textContentType="oneTimeCode"
+          maxLength={20}
+          onSubmitEditing={handleSubmit}
+          touched={login.touched.password}
+          error={login.errors.password}
+          {...login.getTextInputProps('password')}
+        />
       </View>
-      <CustomButton label="로그인" variant="filled" size="large" />
+      <CustomButton
+        label="로그인"
+        variant="filled"
+        size="large"
+        onPress={handleSubmit}
+      />
     </SafeAreaView>
   );
 }
