@@ -54,7 +54,7 @@ async function getAccessToken(): Promise<ResponseToken> {
 
 // 로그아웃
 async function logout() {
-  await axiosInstance.get('/auth/logout');
+  await axiosInstance.post('/auth/logout');
 }
 
 export {postSignup, postLogin, getProfile, getAccessToken, logout};
