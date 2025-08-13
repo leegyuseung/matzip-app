@@ -1,32 +1,43 @@
-import React, {useEffect, useState} from 'react';
+import React, {useRef} from 'react';
+import Toast from 'react-native-toast-message';
+import usePermission from '@/hooks/usePermission';
 import DrawerButton from '@/components/DrawerButton';
-import Geolocation from '@react-native-community/geolocation';
+import useUserLocation from '@/hooks/useUserLocation';
+import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import MapView, {LatLng, PROVIDER_GOOGLE} from 'react-native-maps';
 
-import {StyleSheet} from 'react-native';
 import {colors} from '@/constants/colors';
+import {numbers} from '@/constants/numbers';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 function MapHomeScreen() {
   // 노치 높이 정보 가져오기
   const inset = useSafeAreaInsets();
-  const [userLocation, setUserLocation] = useState<LatLng>();
-  const [isUserLocationError, setIsUserLocationError] = useState(false);
+  const mapRef = useRef<MapView | null>(null);
+  const {userLocation, isUserLocationError} = useUserLocation();
+  usePermission('LOCATION');
 
-  useEffect(() => {
-    Geolocation.getCurrentPosition(
-      info => {
-        console.log('info', info);
-        setUserLocation(info.coords);
-      },
-      () => {
-        setIsUserLocationError(true); // 에러 옵션
-      },
-      {
-        enableHighAccuracy: true, // 높은 정확도 옵션
-      },
-    );
-  }, []);
+  const moveMapView = (coordinate: LatLng) => {
+    mapRef.current?.animateToRegion({
+      ...coordinate,
+      ...numbers.INITIAL_DELTA,
+    });
+  };
+
+  const handlePressUserLocation = () => {
+    if (isUserLocationError) {
+      // 위치 권한을 허용해주세요.
+      Toast.show({
+        type: 'error',
+        text1: '위치 권한을 허용해주세요.',
+        position: 'bottom',
+      });
+      return;
+    }
+
+    moveMapView(userLocation);
+  };
 
   return (
     <>
@@ -34,7 +45,26 @@ function MapHomeScreen() {
         style={[styles.drawerButton, {top: inset.top + 10}]}
         color={colors.WHITE}
       />
-      <MapView style={styles.container} provider={PROVIDER_GOOGLE} />
+      <MapView
+        googleMapId="d0a10d3c5f7b14d66b942e79"
+        style={styles.container}
+        provider={PROVIDER_GOOGLE}
+        ref={mapRef}
+        region={{
+          ...userLocation,
+          ...numbers.INITIAL_DELTA,
+        }}
+      />
+      <View style={styles.buttonList}>
+        <Pressable style={styles.mapButton} onPress={handlePressUserLocation}>
+          <FontAwesome6
+            iconStyle="solid"
+            size={25}
+            color={colors.WHITE}
+            name="location-crosshairs"
+          />
+        </Pressable>
+      </View>
     </>
   );
 }
@@ -53,6 +83,22 @@ const styles = StyleSheet.create({
     backgroundColor: colors.PINK_700,
     borderTopRightRadius: 50,
     borderBottomRightRadius: 50,
+    boxShadow: '1px 1px 3px rgba(0,0,0,0.5)',
+  },
+  buttonList: {
+    position: 'absolute',
+    bottom: 30,
+    right: 20,
+    zIndex: 1,
+  },
+  mapButton: {
+    backgroundColor: colors.PINK_700,
+    marginVertical: 5,
+    height: 45,
+    width: 45,
+    borderRadius: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
     boxShadow: '1px 1px 3px rgba(0,0,0,0.5)',
   },
 });
