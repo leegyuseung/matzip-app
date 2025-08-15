@@ -6,7 +6,7 @@ import {useEffect, useState} from 'react';
 function useUserLocation() {
   const [userLocation, setUserLocation] = useState<LatLng>({
     latitude: 37.5516032365118,
-    longitude: 1266.98989626020192,
+    longitude: 126.98989626020192,
   });
   const [isUserLocationError, setIsUserLocationError] = useState(false);
   const {isComeback} = useAppState();
