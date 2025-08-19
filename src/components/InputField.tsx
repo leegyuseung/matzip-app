@@ -6,17 +6,31 @@ interface InputFieldProps extends TextInputProps {
   ref?: Ref<TextInput>;
   error?: string;
   touched?: boolean;
+  disabled?: boolean;
 }
 
-function InputField({ref, error, touched, ...props}: InputFieldProps) {
+function InputField({
+  ref,
+  error,
+  touched,
+  disabled = false,
+  ...props
+}: InputFieldProps) {
   return (
     <View>
       <TextInput
         ref={ref}
+        placeholderTextColor={colors.GRAY_500}
         autoCapitalize="none" // 첫 글자 대문자
         spellCheck={false} //  오타체크
         autoCorrect={false} // 자동완성
-        style={[styles.input, touched && Boolean(error) && styles.inputError]}
+        style={[
+          styles.input,
+          disabled && styles.disabled,
+          props.multiline && styles.multiline,
+          touched && Boolean(error) && styles.inputError,
+        ]}
+        editable={!disabled}
         {...props}
       />
       {touched && Boolean(error) && <Text style={styles.error}>{error}</Text>}
@@ -44,6 +58,17 @@ const styles = StyleSheet.create({
   inputError: {
     borderWidth: 1,
     borderColor: colors.RED_300,
+  },
+
+  multiline: {
+    height: 150,
+    paddingVertical: 10,
+    textAlignVertical: 'top', // 안드로이드 때문에
+  },
+
+  disabled: {
+    backgroundColor: colors.GRAY_200,
+    color: colors.GRAY_700,
   },
 });
 

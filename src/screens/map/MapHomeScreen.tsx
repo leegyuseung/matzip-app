@@ -5,15 +5,21 @@ import useMoveMapView from '@/hooks/useMoveMapView';
 import DrawerButton from '@/components/DrawerButton';
 import CustomMarker from '@/components/CustomMarker';
 import useUserLocation from '@/hooks/useUserLocation';
-import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
+import MapIconButton from '@/components/MapIconButton';
 import MapView, {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
 import {colors} from '@/constants/colors';
 import {numbers} from '@/constants/numbers';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
+import {MapStackParamList} from '@/types/navigation';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
+type Navigation = StackNavigationProp<MapStackParamList>;
+
 function MapHomeScreen() {
+  const navigation = useNavigation<Navigation>();
   // 노치 높이 정보 가져오기
   const inset = useSafeAreaInsets();
   const {userLocation, isUserLocationError} = useUserLocation();
@@ -38,6 +44,18 @@ function MapHomeScreen() {
 
   const handlePressMarker = (coordinate: LatLng) => {
     moveMapView(coordinate);
+  };
+
+  const handlePressAddPost = () => {
+    if (!selectLocation) {
+      Alert.alert(
+        '추가할 위치를 선택해주세요',
+        '지도를 길게 누르면 위치가 선택됩니다.',
+      );
+      return;
+    }
+
+    navigation.navigate('AddLocation', {location: selectLocation});
   };
 
   return (
@@ -93,14 +111,11 @@ function MapHomeScreen() {
         {selectLocation && <Marker coordinate={selectLocation} />}
       </MapView>
       <View style={styles.buttonList}>
-        <Pressable style={styles.mapButton} onPress={handlePressUserLocation}>
-          <FontAwesome6
-            iconStyle="solid"
-            size={25}
-            color={colors.WHITE}
-            name="location-crosshairs"
-          />
-        </Pressable>
+        <MapIconButton name={'plus'} onPress={handlePressAddPost} />
+        <MapIconButton
+          name={'location-crosshairs'}
+          onPress={handlePressUserLocation}
+        />
       </View>
     </>
   );
@@ -127,16 +142,6 @@ const styles = StyleSheet.create({
     bottom: 30,
     right: 20,
     zIndex: 1,
-  },
-  mapButton: {
-    backgroundColor: colors.PINK_700,
-    marginVertical: 5,
-    height: 45,
-    width: 45,
-    borderRadius: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxShadow: '1px 1px 3px rgba(0,0,0,0.5)',
   },
 });
 
