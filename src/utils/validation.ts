@@ -42,6 +42,8 @@ function validateAddPost(values: {title: string}) {
   const errors = {
     title: '',
     description: '',
+    date: '',
+    color: '',
   };
 
   if (values.title.trim() === '') {
