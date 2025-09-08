@@ -5,10 +5,11 @@ import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 interface MakerColorInputProps {
   color: string;
+  score: number;
   onChnageColor: (value: string) => void;
 }
 
-function MarkerColorInput({color, onChnageColor}: MakerColorInputProps) {
+function MarkerColorInput({color, onChnageColor, score}: MakerColorInputProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.markerLabel}>마커선택</Text>
@@ -29,7 +30,7 @@ function MarkerColorInput({color, onChnageColor}: MakerColorInputProps) {
                   color === selectColor && styles.pressedMarker,
                 ]}
                 onPress={() => onChnageColor(selectColor)}>
-                <CustomMarker color={selectColor} />
+                <CustomMarker color={selectColor} score={score} />
               </Pressable>
             );
           })}
