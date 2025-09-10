@@ -9,19 +9,23 @@ import useGetAddress from '@/hooks/useGetAddress';
 import useImagePicker from '@/hooks/useImagePicker';
 import CustomButton from '@/components/CustomButton';
 import FixedButtomCTA from '@/components/FixedBottomCTA';
+import PreviewImageList from '@/components/PreviewImageList';
 import MarkerColorInput from '@/components/MarkerColorInput';
+import useMutateCreatePost from '@/hooks/queries/useMutateCreatePost';
 import {colors} from '@/constants/colors';
 import {getDateWithSeparator} from '@/utils/date';
 import {validateAddPost} from '@/utils/validation';
-import {ScrollView, StyleSheet} from 'react-native';
 import {MapStackParamList} from '@/types/navigation';
+import {useNavigation} from '@react-navigation/native';
 import {StackScreenProps} from '@react-navigation/stack';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type Props = StackScreenProps<MapStackParamList, 'AddLocation'>;
 
 function AddLocationScreen({route}: Props) {
   const {location} = route.params;
+  const navigation = useNavigation();
   const inset = useSafeAreaInsets();
   const address = useGetAddress(location);
   const imagePicker = useImagePicker();
@@ -37,9 +41,22 @@ function AddLocationScreen({route}: Props) {
   });
 
   const [openDate, setOpenDate] = useState(false);
+  const createPost = useMutateCreatePost();
   usePermission('PHOTO');
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    createPost.mutate(
+      {
+        address,
+        ...location,
+        ...postForm.values,
+        imageUris: imagePicker.imageUris,
+      },
+      {
+        onSuccess: () => navigation.goBack(),
+      },
+    );
+  };
 
   return (
     <>
@@ -91,7 +108,13 @@ function AddLocationScreen({route}: Props) {
           }}
           onCancel={() => setOpenDate(false)}
         />
-        <ImageInput onChange={imagePicker.handleChangeImage} />
+        <View style={{flexDirection: 'row'}}>
+          <ImageInput onChange={imagePicker.handleChangeImage} />
+          <PreviewImageList
+            imageUris={imagePicker.imageUris}
+            onDelete={imagePicker.delete}
+          />
+        </View>
       </ScrollView>
       <FixedButtomCTA label="저장" onPress={handleSubmit} />
     </>
