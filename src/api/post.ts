@@ -12,4 +12,10 @@ async function getPost(id: number): Promise<Post> {
   return data;
 }
 
-export {createPost, getPost};
+async function getPosts(page = 1): Promise<Post[]> {
+  const {data} = await axiosInstance.get(`/posts?page=${page}`);
+
+  return data;
+}
+
+export {createPost, getPost, getPosts};

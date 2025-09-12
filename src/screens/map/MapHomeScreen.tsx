@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
+import useModal from '@/hooks/useModal';
 import Toast from 'react-native-toast-message';
 import usePermission from '@/hooks/usePermission';
-import MarkerModal from '@/components/MarkerModal';
+import MarkerModal from '@/components/map/MarkerModal';
 import useMoveMapView from '@/hooks/useMoveMapView';
-import DrawerButton from '@/components/DrawerButton';
-import CustomMarker from '@/components/CustomMarker';
 import useUserLocation from '@/hooks/useUserLocation';
-import MapIconButton from '@/components/MapIconButton';
 import useGetMarkers from '@/hooks/queries/useGetMarkers';
+import MapIconButton from '@/components/map/MapIconButton';
+import DrawerButton from '@/components/common/DrawerButton';
+import CustomMarker from '@/components/common/CustomMarker';
 import MapView, {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
 import {colors} from '@/constants/colors';
@@ -17,7 +18,6 @@ import {Alert, StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import useModal from '@/hooks/useModal';
 
 type Navigation = StackNavigationProp<MapStackParamList>;
 

@@ -8,9 +8,14 @@ import {Image, Platform, Pressable, ScrollView, StyleSheet} from 'react-native';
 interface PreviewImageListProps {
   imageUris: ImageUri[];
   onDelete?: (uri: string) => void;
+  showDeleteButton?: boolean;
 }
 
-function PreviewImageList({imageUris, onDelete}: PreviewImageListProps) {
+function PreviewImageList({
+  imageUris,
+  onDelete,
+  showDeleteButton = false,
+}: PreviewImageListProps) {
   return (
     <ScrollView horizontal contentContainerStyle={styles.container}>
       {imageUris.map(({uri}) => {
@@ -25,11 +30,13 @@ function PreviewImageList({imageUris, onDelete}: PreviewImageListProps) {
               }}
               resizeMode="cover"
             />
-            <Pressable
-              style={styles.deleteButton}
-              onPress={() => onDelete?.(uri)}>
-              <Ionicons name="close" size={16} color={colors.WHITE} />
-            </Pressable>
+            {showDeleteButton && (
+              <Pressable
+                style={styles.deleteButton}
+                onPress={() => onDelete?.(uri)}>
+                <Ionicons name="close" size={16} color={colors.WHITE} />
+              </Pressable>
+            )}
           </Pressable>
         );
       })}

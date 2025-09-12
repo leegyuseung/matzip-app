@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomButton from '@/components/CustomButton';
+import CustomButton from '@/components/common/CustomButton';
 import {colors} from '@/constants/colors';
 import {useNavigation} from '@react-navigation/native';
 import {AuthStackParamList} from '@/types/navigation';

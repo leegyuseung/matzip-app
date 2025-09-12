@@ -1,0 +1,52 @@
+import FeedItem from './FeedItem';
+import React, {useState} from 'react';
+import useGetInfinitePosts from '@/hooks/queries/useGetInfinitePosts';
+import {FlatList, StyleSheet} from 'react-native';
+
+function FeedList() {
+  const {
+    data: posts,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch,
+  } = useGetInfinitePosts();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // 끝에 닿았을 때 실행
+  const handleEndReached = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refetch();
+    setIsRefreshing(false);
+  };
+
+  return (
+    <FlatList
+      data={posts?.pages.flat()}
+      renderItem={({item}) => <FeedItem post={item} />}
+      keyExtractor={item => String(item.id)}
+      numColumns={2}
+      contentContainerStyle={styles.contentContainer}
+      onEndReached={handleEndReached}
+      onEndReachedThreshold={0.5}
+      onRefresh={handleRefresh}
+      refreshing={isRefreshing}
+      scrollIndicatorInsets={{right: 1}}
+      indicatorStyle="black"
+    />
+  );
+}
+
+const styles = StyleSheet.create({
+  contentContainer: {
+    padding: 15,
+  },
+});
+
+export default FeedList;
