@@ -1,7 +1,7 @@
 import React from 'react';
 import CustomButton from './CustomButton';
-import {StyleSheet, View} from 'react-native';
 import {colors} from '@/constants/colors';
+import {StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface FixedButtomCTAProps {

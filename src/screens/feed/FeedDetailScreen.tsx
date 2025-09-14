@@ -1,14 +1,18 @@
 import React from 'react';
+import useModal from '@/hooks/useModal';
+import useLocationStore from '@/store/location';
 import useGetPost from '@/hooks/queries/useGetPost';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import CustomButton from '@/components/common/CustomButton';
 import PreviewImageList from '@/components/common/PreviewImageList';
+import FeedDetailActionSheet from '@/components/feed/FeedDetailActionSheet';
 import {baseUrls} from '@/api/axios';
 import {colors} from '@/constants/colors';
 import {getDateWithSeparator} from '@/utils/date';
 import {FeedStackParamList} from '@/types/navigation';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
 import {StackScreenProps} from '@react-navigation/stack';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   Dimensions,
   Image,
@@ -23,18 +27,39 @@ type Props = StackScreenProps<FeedStackParamList, 'FeedDetail'>;
 
 function FeedDetailScreen({route}: Props) {
   const {id} = route.params;
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const {data: post, isPending, isError} = useGetPost(id);
+  const {setMoveLocation} = useLocationStore();
+  const detailAction = useModal();
 
   if (isPending || isError) {
     return <></>;
   }
 
+  const handlePressLocation = () => {
+    const {latitude, longitude} = post;
+    setMoveLocation({latitude, longitude});
+
+    navigation.navigate('Map', {
+      screen: 'MapHome',
+    });
+  };
   return (
     <>
       <View style={[styles.header, {top: insets.top}]}>
-        <Ionicons name="chevron-back" size={30} color={colors.WHITE} />
-        <Ionicons name="ellipsis-vertical" size={30} color={colors.WHITE} />
+        <Ionicons
+          name="chevron-back"
+          size={30}
+          color={colors.WHITE}
+          onPress={() => navigation.goBack()}
+        />
+        <Ionicons
+          name="ellipsis-vertical"
+          size={30}
+          color={colors.WHITE}
+          onPress={detailAction.show}
+        />
       </View>
       <ScrollView>
         <View style={styles.imageContainer}>
@@ -103,8 +128,18 @@ function FeedDetailScreen({route}: Props) {
           label={<Ionicons name="star" size={25} color={colors.WHITE} />}
           style={{paddingHorizontal: 5}}
         />
-        <CustomButton size="small" label="위치보기" style={{width: '50%'}} />
+        <CustomButton
+          size="small"
+          label="위치보기"
+          style={{width: '50%'}}
+          onPress={handlePressLocation}
+        />
       </View>
+      <FeedDetailActionSheet
+        id={post.id}
+        isVisible={detailAction.isVisible}
+        hideAction={detailAction.hide}
+      />
     </>
   );
 }

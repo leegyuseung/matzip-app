@@ -1,5 +1,6 @@
-import {useRef, useState} from 'react';
 import {numbers} from '@/constants/numbers';
+import {useEffect, useRef, useState} from 'react';
+import useLocationStore from '@/store/location';
 import MapView, {LatLng, Region} from 'react-native-maps';
 
 type Delta = Pick<Region, 'latitudeDelta' | 'longitudeDelta'>;
@@ -7,6 +8,7 @@ type Delta = Pick<Region, 'latitudeDelta' | 'longitudeDelta'>;
 function useMoveMapView() {
   const mapRef = useRef<MapView | null>(null);
   const [regionDelta, setRegionDelta] = useState<Delta>(numbers.INITIAL_DELTA);
+  const {moveLocation} = useLocationStore();
 
   const moveMapView = (coordinate: LatLng, delta?: Delta) => {
     mapRef.current?.animateToRegion({
@@ -19,6 +21,10 @@ function useMoveMapView() {
     const {latitudeDelta, longitudeDelta} = region;
     setRegionDelta({latitudeDelta, longitudeDelta});
   };
+
+  useEffect(() => {
+    moveLocation && moveMapView(moveLocation);
+  }, [moveLocation]);
 
   return {mapRef, moveMapView, handleChangeDelta};
 }

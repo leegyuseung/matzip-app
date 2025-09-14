@@ -18,4 +18,10 @@ async function getPosts(page = 1): Promise<Post[]> {
   return data;
 }
 
-export {createPost, getPost, getPosts};
+async function deletePost(id: number) {
+  const {data} = await axiosInstance.delete(`/posts/${id}`);
+
+  return data;
+}
+
+export {createPost, getPost, getPosts, deletePost};
