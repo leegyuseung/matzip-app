@@ -18,6 +18,7 @@ export type FeedStackParamList = {
   FeedDetail: {id: number}; // 피드디테일로 넘어갈때 각각의 id를 param에 넣어서 디테일로 이동시켜준다
   FeedFavorite: undefined;
   EditLocation: {id: number};
+  ImageZoom: {id?: number; index: number};
 };
 
 export type MainDrawerParamList = {

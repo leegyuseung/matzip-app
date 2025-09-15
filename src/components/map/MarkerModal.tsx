@@ -4,6 +4,7 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 import {baseUrls} from '@/api/axios';
 import {colors} from '@/constants/colors';
 import {getDateWithSeparator} from '@/utils/date';
+import {useNavigation} from '@react-navigation/native';
 import {
   Image,
   Modal,
@@ -23,15 +24,28 @@ interface MarkerModalProps {
 
 function MarkerModal({markerId, isVisible, hide}: MarkerModalProps) {
   const {data: post, isPending, isError} = useGetPost(markerId);
+  const navigation = useNavigation();
 
   if (isPending || isError) {
     return <></>;
   }
 
+  const handlePressModal = () => {
+    navigation.navigate('Feed', {
+      screen: 'FeedDetail',
+      params: {
+        id: post.id,
+      },
+      initial: false,
+    });
+
+    hide();
+  };
+
   return (
     <Modal visible={isVisible} transparent animationType="slide">
       <SafeAreaView style={styles.background} onTouchEnd={hide}>
-        <Pressable style={styles.cardContainer}>
+        <Pressable style={styles.cardContainer} onPress={handlePressModal}>
           <View style={styles.cardInner}>
             <View style={styles.cardAlign}>
               {post.imageUris.length > 0 && (

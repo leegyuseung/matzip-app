@@ -24,4 +24,35 @@ async function deletePost(id: number) {
   return data;
 }
 
-export {createPost, getPost, getPosts, deletePost};
+type RequestUpdatePost = {
+  id: number;
+  body: Omit<Post, 'id' | 'longitude' | 'address' | 'latitude'>;
+};
+
+async function updatePost({id, body}: RequestUpdatePost): Promise<Post> {
+  const {data} = await axiosInstance.patch(`/posts/${id}`, body);
+
+  return data;
+}
+
+async function getFavoritePosts(page = 1): Promise<Post[]> {
+  const {data} = await axiosInstance.get(`/favorites?page=${page}`);
+
+  return data;
+}
+
+async function updateFavoritePost(id: number): Promise<number> {
+  const {data} = await axiosInstance.post(`/favorites/${id}`);
+
+  return data;
+}
+
+export {
+  createPost,
+  getPost,
+  getPosts,
+  deletePost,
+  updatePost,
+  updateFavoritePost,
+  getFavoritePosts,
+};

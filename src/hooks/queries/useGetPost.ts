@@ -4,10 +4,11 @@ import {queryKeys} from '@/constants/keys';
 import {useQuery} from '@tanstack/react-query';
 import {useQueryCustomOptions} from '@/types/api';
 
-function useGetPost(id: number, queryOptions?: useQueryCustomOptions<Post>) {
+function useGetPost(id?: number, queryOptions?: useQueryCustomOptions<Post>) {
   return useQuery({
-    queryFn: () => getPost(id),
+    queryFn: () => getPost(Number(id)),
     queryKey: [queryKeys.POST, queryKeys.GET_POST, id],
+    enabled: Boolean(id),
     ...queryOptions,
   });
 }

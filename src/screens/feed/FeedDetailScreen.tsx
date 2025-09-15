@@ -5,7 +5,9 @@ import useGetPost from '@/hooks/queries/useGetPost';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import CustomButton from '@/components/common/CustomButton';
 import PreviewImageList from '@/components/common/PreviewImageList';
+import useMutateFavoritePost from '@/hooks/queries/useMutateFavoritePost';
 import FeedDetailActionSheet from '@/components/feed/FeedDetailActionSheet';
+
 import {baseUrls} from '@/api/axios';
 import {colors} from '@/constants/colors';
 import {getDateWithSeparator} from '@/utils/date';
@@ -32,6 +34,7 @@ function FeedDetailScreen({route}: Props) {
   const {data: post, isPending, isError} = useGetPost(id);
   const {setMoveLocation} = useLocationStore();
   const detailAction = useModal();
+  const favoriteMutation = useMutateFavoritePost();
 
   if (isPending || isError) {
     return <></>;
@@ -45,6 +48,7 @@ function FeedDetailScreen({route}: Props) {
       screen: 'MapHome',
     });
   };
+
   return (
     <>
       <View style={[styles.header, {top: insets.top}]}>
@@ -125,8 +129,15 @@ function FeedDetailScreen({route}: Props) {
       <View style={[styles.bottomContainer, {paddingBottom: insets.bottom}]}>
         <CustomButton
           size="small"
-          label={<Ionicons name="star" size={25} color={colors.WHITE} />}
+          label={
+            <Ionicons
+              name="star"
+              size={25}
+              color={post.isFavorite ? colors.YELLOW_500 : colors.WHITE}
+            />
+          }
           style={{paddingHorizontal: 5}}
+          onPress={() => favoriteMutation.mutate(post.id)}
         />
         <CustomButton
           size="small"

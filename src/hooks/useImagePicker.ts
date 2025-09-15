@@ -1,13 +1,18 @@
 import Toast from 'react-native-toast-message';
 import useMutateImages from '@/hooks/queries/useMutateImages';
 import ImageCropPicker from 'react-native-image-crop-picker';
+
 import {useState} from 'react';
 import {ImageUri} from '@/types/domain';
 import {getFormDataImages} from '@/utils/image';
 
-function useImagePicker() {
+interface UseImagePickerProps {
+  initialImages: ImageUri[];
+}
+
+function useImagePicker({initialImages}: UseImagePickerProps) {
   const uploadImage = useMutateImages();
-  const [imageUris, setImageUris] = useState<ImageUri[]>([]);
+  const [imageUris, setImageUris] = useState<ImageUri[]>(initialImages);
 
   const addImageUris = (uris: string[]) => {
     setImageUris(prev => [...prev, ...uris.map(uri => ({uri}))]);

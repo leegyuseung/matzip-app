@@ -1,8 +1,10 @@
 import React from 'react';
-import {ActionSheet} from '../common/ActionSheet';
 import useMutateDeletePost from '@/hooks/queries/useMutateDeletePost';
-import {useNavigation} from '@react-navigation/native';
 import {Alert} from 'react-native';
+import {ActionSheet} from '../common/ActionSheet';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {FeedStackParamList} from '@/types/navigation';
 
 interface FeedDetailActionSheetProps {
   isVisible: boolean;
@@ -10,13 +12,15 @@ interface FeedDetailActionSheetProps {
   id: number;
 }
 
+type Navigation = StackNavigationProp<FeedStackParamList>;
+
 function FeedDetailActionSheet({
   isVisible,
   hideAction,
   id,
 }: FeedDetailActionSheetProps) {
   const deletePost = useMutateDeletePost();
-  const navigation = useNavigation();
+  const navigation = useNavigation<Navigation>();
   const handleDeletePost = () => {
     Alert.alert('삭제하시겠습니까?', '피드와 지도에서 모두 삭제됩니다.', [
       {
@@ -36,6 +40,12 @@ function FeedDetailActionSheet({
       },
     ]);
   };
+
+  const handleEditPost = () => {
+    navigation.navigate('EditLocation', {id});
+    hideAction();
+  };
+
   return (
     <ActionSheet isVisible={isVisible} hideAction={hideAction}>
       <ActionSheet.Background>
@@ -44,7 +54,9 @@ function FeedDetailActionSheet({
             삭제하기
           </ActionSheet.Button>
           <ActionSheet.Devider />
-          <ActionSheet.Button>수정하기</ActionSheet.Button>
+          <ActionSheet.Button onPress={handleEditPost}>
+            수정하기
+          </ActionSheet.Button>
         </ActionSheet.Container>
         <ActionSheet.Container>
           <ActionSheet.Button onPress={hideAction}>취소</ActionSheet.Button>
