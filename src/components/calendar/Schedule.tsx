@@ -5,11 +5,12 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 interface ScheduleProps {
   subTitle: string;
   title: string;
+  onPress: () => void;
 }
 
-function Schedule({subTitle, title}: ScheduleProps) {
+function Schedule({subTitle, title, onPress}: ScheduleProps) {
   return (
-    <Pressable style={styles.container}>
+    <Pressable style={styles.container} onPress={onPress}>
       <View style={styles.line} />
       <View style={styles.infoContainer}>
         <Text

@@ -1,9 +1,12 @@
 import React from 'react';
 import DateBox from './DateBox';
 import DayOfWeeks from './DayOfWeeks';
+import useModal from '@/hooks/useModal';
+import YearSelector from './YearSelector';
 import Ionicons from '@react-native-vector-icons/ionicons';
 
 import {colors} from '@/constants/colors';
+import {ResponseCalendarPost} from '@/api/post';
 import {isSameAsCurrentDate, MonthYear} from '@/utils/date';
 import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 
@@ -12,6 +15,7 @@ interface CalendarProps {
   onChangeMonth: (increment: number) => void;
   selectedDate: number;
   onPressDate: (date: number) => void;
+  schedules: ResponseCalendarPost;
 }
 
 function Calendar({
@@ -19,8 +23,15 @@ function Calendar({
   onChangeMonth,
   selectedDate,
   onPressDate,
+  schedules,
 }: CalendarProps) {
   const {month, year, firstDOW, lastDate} = monthYear;
+  const yearSelector = useModal();
+
+  const handleChangeYear = (selectYear: number) => {
+    onChangeMonth((selectYear - year) * 12);
+    yearSelector.hide();
+  };
 
   return (
     <>
@@ -28,10 +39,13 @@ function Calendar({
         <Pressable style={styles.monthButton} onPress={() => onChangeMonth(-1)}>
           <Ionicons name="arrow-back" size={25} color={colors.BLACK} />
         </Pressable>
-        <Pressable style={styles.monthYearContainer}>
+        <Pressable
+          style={styles.monthYearContainer}
+          onPress={yearSelector.show}>
           <Text style={styles.monthYaarText}>
             {year}년 {month}월
           </Text>
+          <Ionicons name="chevron-down" size={20} color={colors.GRAY_500} />
         </Pressable>
         <Pressable style={styles.monthButton} onPress={() => onChangeMonth(1)}>
           <Ionicons name="arrow-forward" size={25} color={colors.BLACK} />
@@ -51,12 +65,20 @@ function Calendar({
               isToday={isSameAsCurrentDate(year, month, item.date)}
               selectedDate={selectedDate}
               onPressDate={onPressDate}
+              hasSchedule={Boolean(schedules[item.date])}
             />
           )}
           keyExtractor={item => String(item.id)}
           numColumns={7}
         />
       </View>
+
+      <YearSelector
+        isVisible={yearSelector.isVisible}
+        currentyear={year}
+        onChangeYear={handleChangeYear}
+        hide={yearSelector.hide}
+      />
     </>
   );
 }
