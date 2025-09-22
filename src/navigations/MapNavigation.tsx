@@ -1,6 +1,7 @@
 import MapHomeScreen from '@/screens/map/MapHomeScreen';
 import AddLocationScreen from '@/screens/map/AddLocationScreen';
 import SearchLocationScreen from '@/screens/map/SearchLocationScreen';
+
 import {colors} from '@/constants/colors';
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -37,6 +38,13 @@ export const MapStack = createStackNavigator({
 
     SearchLocation: {
       screen: SearchLocationScreen,
+      options: {
+        title: '장소 검색',
+        presentation: 'modal',
+        cardStyle: {
+          backgroundColor: colors.WHITE,
+        },
+      },
     },
   },
 });

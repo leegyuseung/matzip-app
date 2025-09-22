@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import useModal from '@/hooks/useModal';
 import Toast from 'react-native-toast-message';
+import useLocationStore from '@/store/location';
 import usePermission from '@/hooks/usePermission';
 import useMoveMapView from '@/hooks/useMoveMapView';
 import useUserLocation from '@/hooks/useUserLocation';
@@ -27,7 +28,7 @@ function MapHomeScreen() {
   const inset = useSafeAreaInsets();
   const [markerId, setMarkerId] = useState<number>();
   const {userLocation, isUserLocationError} = useUserLocation();
-  const [selectLocation, setSelectLocation] = useState<LatLng | null>();
+  const {selectLocation, setSelectLocation} = useLocationStore();
   const {mapRef, moveMapView, handleChangeDelta} = useMoveMapView();
   const {data: markers = []} = useGetMarkers();
   const markerModal = useModal();
@@ -102,6 +103,10 @@ function MapHomeScreen() {
         {selectLocation && <Marker coordinate={selectLocation} />}
       </MapView>
       <View style={styles.buttonList}>
+        <MapIconButton
+          name={'magnifying-glass'}
+          onPress={() => navigation.navigate('SearchLocation')}
+        />
         <MapIconButton name={'plus'} onPress={handlePressAddPost} />
         <MapIconButton
           name={'location-crosshairs'}
