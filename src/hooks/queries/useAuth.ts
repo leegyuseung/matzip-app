@@ -8,6 +8,7 @@ import {useMutation, useQuery} from '@tanstack/react-query';
 import {UseMutationCustomOptions, useQueryCustomOptions} from '@/types/api';
 import {removeEncryptStorage, setEncryptStorage} from '@/utils/encryptStorage';
 import {
+  editProfile,
   getAccessToken,
   getProfile,
   logout,
@@ -86,6 +87,19 @@ function useLogout(mutationOptions?: UseMutationCustomOptions) {
   });
 }
 
+function useUpdateProfile(mutationOptions?: UseMutationCustomOptions) {
+  return useMutation({
+    mutationFn: editProfile,
+    onSuccess: newProfile => {
+      queryClient.setQueryData(
+        [queryKeys.AUTH, queryKeys.GET_PROFILE],
+        newProfile,
+      );
+    },
+    ...mutationOptions,
+  });
+}
+
 function useAuth() {
   const signupMutation = useSignup();
   const loginMutation = useLogin();
@@ -94,6 +108,7 @@ function useAuth() {
     enabled: refreshTokenQuery.isSuccess, // enabled가 True일 때만 useGet 프로필이 호출
   });
   const logoutMutation = useLogout();
+  const profileMutation = useUpdateProfile();
 
   return {
     auth: {
@@ -106,6 +121,7 @@ function useAuth() {
     loginMutation,
     isLogin,
     logoutMutation,
+    profileMutation,
   };
 }
 

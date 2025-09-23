@@ -1,8 +1,13 @@
 import React from 'react';
 import useAuth from '@/hooks/queries/useAuth';
+import Ionicons from '@react-native-vector-icons/ionicons';
+
+import {baseUrls} from '@/api/axios';
 import {colors} from '@/constants/colors';
+import {useNavigation} from '@react-navigation/native';
 import {
   Image,
+  Platform,
   Pressable,
   SafeAreaView,
   StyleSheet,
@@ -17,6 +22,7 @@ import {
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
   const {auth} = useAuth();
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,7 +34,15 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
           <View style={styles.userImageContainer}>
             <Image
               style={styles.userImage}
-              source={require('@/assets/default-user.png')}
+              source={
+                auth.imageUri
+                  ? {
+                      uri: `${
+                        Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android
+                      }/${auth.imageUri}`,
+                    }
+                  : require('@/assets/default-user.png')
+              }
             />
           </View>
           <Text style={styles.nickname}>{auth.nickname}</Text>
@@ -36,7 +50,12 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
       <View style={styles.bottomContainer}>
-        <Text style={styles.menuText}>설정</Text>
+        <Pressable
+          style={styles.bottomMenu}
+          onPress={() => navigation.navigate('Setting')}>
+          <Ionicons name="settings-outline" size={20} color={colors.BLACK} />
+          <Text style={styles.menuText}>설정</Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
@@ -77,6 +96,11 @@ const styles = StyleSheet.create({
   },
   menuText: {
     fontSize: 15,
+  },
+  bottomMenu: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
   },
 });
 
