@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import useModal from '@/hooks/useModal';
+import useFilterStore from '@/store/filter';
 import Toast from 'react-native-toast-message';
 import useLocationStore from '@/store/location';
 import usePermission from '@/hooks/usePermission';
@@ -10,6 +11,7 @@ import useGetMarkers from '@/hooks/queries/useGetMarkers';
 import MapIconButton from '@/components/map/MapIconButton';
 import DrawerButton from '@/components/common/DrawerButton';
 import CustomMarker from '@/components/common/CustomMarker';
+import MarkerFilterAction from '@/components/map/MarkerFilterAction';
 import MapView, {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
 import {colors} from '@/constants/colors';
@@ -30,8 +32,18 @@ function MapHomeScreen() {
   const {userLocation, isUserLocationError} = useUserLocation();
   const {selectLocation, setSelectLocation} = useLocationStore();
   const {mapRef, moveMapView, handleChangeDelta} = useMoveMapView();
-  const {data: markers = []} = useGetMarkers();
+  const {filters} = useFilterStore();
+  const {data: markers = []} = useGetMarkers({
+    select: data =>
+      data.filter(
+        marker =>
+          filters[marker.color] === true &&
+          filters[String(marker.score)] === true,
+      ),
+  });
+
   const markerModal = useModal();
+  const filterAction = useModal();
 
   usePermission('LOCATION');
 
@@ -107,6 +119,7 @@ function MapHomeScreen() {
           name={'magnifying-glass'}
           onPress={() => navigation.navigate('SearchLocation')}
         />
+        <MapIconButton name={'filter'} onPress={filterAction.show} />
         <MapIconButton name={'plus'} onPress={handlePressAddPost} />
         <MapIconButton
           name={'location-crosshairs'}
@@ -118,6 +131,11 @@ function MapHomeScreen() {
         markerId={Number(markerId)}
         isVisible={markerModal.isVisible}
         hide={markerModal.hide}
+      />
+
+      <MarkerFilterAction
+        isVisible={filterAction.isVisible}
+        hideAction={filterAction.hide}
       />
     </>
   );

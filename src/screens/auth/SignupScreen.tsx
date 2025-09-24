@@ -1,9 +1,12 @@
 import React, {useRef} from 'react';
 import useForm from '@/hooks/useForm';
 import useAuth from '@/hooks/queries/useAuth';
+import Toast from 'react-native-toast-message';
 import InputField from '@/components/common/InputField';
 import CustomButton from '@/components/common/CustomButton';
+
 import {validateSignup} from '@/utils/validation';
+import {errorMessages} from '@/constants/messages';
 import {SafeAreaView, StyleSheet, TextInput, View} from 'react-native';
 
 function SignupScreen() {
@@ -25,7 +28,14 @@ function SignupScreen() {
 
     signupMutation.mutate(
       {email, password},
-      {onSuccess: () => loginMutation.mutate({email, password})}, // 회원가입하면 바로 로그인해주기
+      {
+        onSuccess: () => loginMutation.mutate({email, password}),
+        onError: error =>
+          Toast.show({
+            type: 'error',
+            text1: error.response?.data.message || errorMessages.UNEXPECT_ERROR,
+          }),
+      }, // 회원가입하면 바로 로그인해주기
     );
   };
 

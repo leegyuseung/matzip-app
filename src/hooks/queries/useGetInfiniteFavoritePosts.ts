@@ -5,12 +5,12 @@ import {ResponseError} from '@/types/api';
 import {
   InfiniteData,
   QueryKey,
-  useInfiniteQuery,
-  UseInfiniteQueryOptions,
+  useSuspenseInfiniteQuery,
+  UseSuspenseInfiniteQueryOptions,
 } from '@tanstack/react-query';
 
 function useGetInfiniteFavoritePosts(
-  queryOptions?: UseInfiniteQueryOptions<
+  queryOptions?: UseSuspenseInfiniteQueryOptions<
     Post[],
     ResponseError,
     InfiniteData<Post[], number>,
@@ -18,7 +18,7 @@ function useGetInfiniteFavoritePosts(
     number
   >,
 ) {
-  return useInfiniteQuery({
+  return useSuspenseInfiniteQuery({
     queryFn: ({pageParam}) => getFavoritePosts(pageParam),
     queryKey: [queryKeys.POST, queryKeys.GET_POSTS],
     initialPageParam: 1,

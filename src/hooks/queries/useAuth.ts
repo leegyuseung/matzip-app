@@ -20,6 +20,7 @@ function useSignup(mutationOptions?: UseMutationCustomOptions) {
   return useMutation({
     mutationFn: postSignup,
     ...mutationOptions,
+    throwOnError: error => Number(error.response?.status) >= 500,
   });
 }
 
