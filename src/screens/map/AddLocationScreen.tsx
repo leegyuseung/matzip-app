@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import useForm from '@/hooks/useForm';
+import useThemeStroe from '@/store/theme';
 import ImageInput from '@/components/post/ImageInput';
 import ScoreInput from '@/components/post/ScoreInput';
 import InputField from '@/components/common/InputField';
@@ -30,12 +31,13 @@ function AddLocationScreen({route}: Props) {
   const inset = useSafeAreaInsets();
   const address = useGetAddress(location);
   const imagePicker = useImagePicker({initialImages: []});
+  const {theme} = useThemeStroe();
   const postForm = useForm({
     initialValue: {
       title: '',
       description: '',
       date: new Date(),
-      color: colors.PINK_400,
+      color: colors[theme].PINK_400,
       score: 3,
     },
     validate: validateAddPost,

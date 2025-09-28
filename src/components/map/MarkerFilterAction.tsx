@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import useThemeStroe from '@/store/theme';
 import useFilterStore from '@/store/filter';
 
 import {colors} from '@/constants/colors';
@@ -17,6 +18,7 @@ function MarkerFilterAction({isVisible, hideAction}: MarkerFilterActionProps) {
   const handleFilter = (name: string) => {
     setFilters({...filters, [name]: !filters[name]});
   };
+  const {theme} = useThemeStroe();
 
   return (
     <ActionSheet
@@ -41,11 +43,11 @@ function MarkerFilterAction({isVisible, hideAction}: MarkerFilterActionProps) {
           {filterCondition === '색상' && (
             <>
               {[
-                colors.PINK_400,
-                colors.YELLOW_400,
-                colors.GREEN_400,
-                colors.BLUE_400,
-                colors.PURPLE_400,
+                colors[theme].PINK_400,
+                colors[theme].YELLOW_400,
+                colors[theme].GREEN_400,
+                colors[theme].BLUE_400,
+                colors[theme].PURPLE_400,
               ].map(color => (
                 <ActionSheet.CheckBox
                   key={color}

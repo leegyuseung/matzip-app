@@ -4,6 +4,7 @@ import useFilterStore from '@/store/filter';
 import Toast from 'react-native-toast-message';
 import useLocationStore from '@/store/location';
 import usePermission from '@/hooks/usePermission';
+import useThemeStroe, {Theme} from '@/store/theme';
 import useMoveMapView from '@/hooks/useMoveMapView';
 import useUserLocation from '@/hooks/useUserLocation';
 import MarkerModal from '@/components/map/MarkerModal';
@@ -26,6 +27,8 @@ type Navigation = StackNavigationProp<MapStackParamList>;
 
 function MapHomeScreen() {
   const navigation = useNavigation<Navigation>();
+  const {theme} = useThemeStroe();
+  const styles = styling(theme);
   // 노치 높이 정보 가져오기
   const inset = useSafeAreaInsets();
   const [markerId, setMarkerId] = useState<number>();
@@ -85,9 +88,10 @@ function MapHomeScreen() {
     <>
       <DrawerButton
         style={[styles.drawerButton, {top: inset.top + 10}]}
-        color={colors.WHITE}
+        color={colors[theme].WHITE}
       />
       <MapView
+        userInterfaceStyle={theme}
         googleMapId="d0a10d3c5f7b14d66b942e79"
         style={styles.container}
         provider={PROVIDER_GOOGLE}
@@ -141,28 +145,29 @@ function MapHomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  drawerButton: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    zIndex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    backgroundColor: colors.PINK_700,
-    borderTopRightRadius: 50,
-    borderBottomRightRadius: 50,
-    boxShadow: '1px 1px 3px rgba(0,0,0,0.5)',
-  },
-  buttonList: {
-    position: 'absolute',
-    bottom: 30,
-    right: 20,
-    zIndex: 1,
-  },
-});
+const styling = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    drawerButton: {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      zIndex: 1,
+      paddingVertical: 10,
+      paddingHorizontal: 15,
+      backgroundColor: colors[theme].PINK_700,
+      borderTopRightRadius: 50,
+      borderBottomRightRadius: 50,
+      boxShadow: '1px 1px 3px rgba(0,0,0,0.5)',
+    },
+    buttonList: {
+      position: 'absolute',
+      bottom: 30,
+      right: 20,
+      zIndex: 1,
+    },
+  });
 
 export default MapHomeScreen;

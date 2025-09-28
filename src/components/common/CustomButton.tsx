@@ -1,4 +1,6 @@
 import React, {ReactNode} from 'react';
+import useThemeStroe, {Theme} from '@/store/theme';
+
 import {colors} from '@/constants/colors';
 import {
   StyleSheet,
@@ -23,6 +25,9 @@ function CustomButton({
   style = null,
   ...props
 }: CustomButtonProps) {
+  const {theme} = useThemeStroe();
+  const styles = styling(theme);
+
   return (
     <Pressable
       style={({pressed}) => [
@@ -42,48 +47,49 @@ function CustomButton({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 3,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const styling = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      borderRadius: 3,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
 
-  filled: {
-    backgroundColor: colors.PINK_700,
-  },
+    filled: {
+      backgroundColor: colors[theme].PINK_700,
+    },
 
-  outlined: {
-    backgroundColor: colors.WHITE,
-    borderColor: colors.PINK_700,
-    borderWidth: 1,
-  },
+    outlined: {
+      backgroundColor: colors[theme].WHITE,
+      borderColor: colors[theme].PINK_700,
+      borderWidth: 1,
+    },
 
-  filledText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: colors.WHITE,
-  },
+    filledText: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      color: colors[theme].WHITE,
+    },
 
-  outlinedText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: colors.PINK_700,
-  },
+    outlinedText: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      color: colors[theme].PINK_700,
+    },
 
-  large: {
-    width: '100%',
-    height: 45,
-  },
+    large: {
+      width: '100%',
+      height: 45,
+    },
 
-  small: {
-    paddingHorizontal: 10,
-    height: 35,
-  },
+    small: {
+      paddingHorizontal: 10,
+      height: 35,
+    },
 
-  pressed: {
-    opacity: 0.8,
-  },
-});
+    pressed: {
+      opacity: 0.8,
+    },
+  });
 
 export default CustomButton;

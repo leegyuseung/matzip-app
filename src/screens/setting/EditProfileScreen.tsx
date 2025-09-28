@@ -3,6 +3,7 @@ import useForm from '@/hooks/useForm';
 import useModal from '@/hooks/useModal';
 import useAuth from '@/hooks/queries/useAuth';
 import Toast from 'react-native-toast-message';
+import useThemeStroe, {Theme} from '@/store/theme';
 import useImagePicker from '@/hooks/useImagePicker';
 import InputField from '@/components/common/InputField';
 import Ionicons from '@react-native-vector-icons/ionicons';
@@ -22,6 +23,8 @@ import {
 } from 'react-native';
 
 function EditProfileScreen() {
+  const {theme} = useThemeStroe();
+  const styles = styling(theme);
   const {auth, profileMutation} = useAuth();
   const imageAction = useModal();
 
@@ -69,7 +72,7 @@ function EditProfileScreen() {
               <Ionicons
                 name="camera-outline"
                 size={30}
-                color={colors.GRAY_500}
+                color={colors[theme].GRAY_500}
               />
             ) : (
               <Image
@@ -101,35 +104,36 @@ function EditProfileScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
+const styling = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 20,
+    },
 
-  profileContainer: {
-    alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 40,
-  },
+    profileContainer: {
+      alignItems: 'center',
+      marginTop: 20,
+      marginBottom: 40,
+    },
 
-  imageContainer: {
-    width: 100,
-    height: 100,
-  },
+    imageContainer: {
+      width: 100,
+      height: 100,
+    },
 
-  emptyImageContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: colors.GRAY_200,
-    borderRadius: 50,
-    borderWidth: 1,
-  },
+    emptyImageContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderColor: colors[theme].GRAY_200,
+      borderRadius: 50,
+      borderWidth: 1,
+    },
 
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-});
+    image: {
+      width: '100%',
+      height: '100%',
+    },
+  });
 
 export default EditProfileScreen;

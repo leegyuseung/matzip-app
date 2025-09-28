@@ -1,3 +1,4 @@
+import useThemeStroe, {Theme} from '@/store/theme';
 import Calendar from '@/components/calendar/Calendar';
 import Schedule from '@/components/calendar/Schedule';
 import React, {useCallback, useEffect, useState} from 'react';
@@ -20,6 +21,8 @@ function CalendarScreen() {
   const [monthYear, setMonthYear] = useState(currentMonthYear);
   const [selectedDate, setSelectedDate] = useState(0);
   const {data: posts} = useGetCalendarPosts(monthYear.year, monthYear.month);
+  const {theme} = useThemeStroe();
+  const styles = styling(theme);
 
   const moveToToday = useCallback(() => {
     setSelectedDate(new Date().getDate());
@@ -35,11 +38,13 @@ function CalendarScreen() {
     navigation.setOptions({
       headerRight: () => (
         <Pressable onPress={moveToToday} style={{paddingHorizontal: 10}}>
-          <Text style={{color: colors.PINK_700, fontWeight: 'bold'}}>오늘</Text>
+          <Text style={{color: colors[theme].PINK_700, fontWeight: 'bold'}}>
+            오늘
+          </Text>
         </Pressable>
       ),
     });
-  }, [navigation, moveToToday]);
+  }, [navigation, moveToToday, theme]);
 
   const handlePressSchedule = (postId: number) => {
     navigation.navigate('Feed', {
@@ -74,16 +79,17 @@ function CalendarScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.WHITE,
-  },
+const styling = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors[theme].WHITE,
+    },
 
-  scheduleContainer: {
-    padding: 20,
-    backgroundColor: colors.WHITE,
-  },
-});
+    scheduleContainer: {
+      padding: 20,
+      backgroundColor: colors[theme].WHITE,
+    },
+  });
 
 export default CalendarScreen;

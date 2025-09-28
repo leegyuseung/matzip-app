@@ -1,5 +1,7 @@
 import React from 'react';
+import useThemeStroe, {Theme} from '@/store/theme';
 import Ionicons from '@react-native-vector-icons/ionicons';
+
 import {baseUrls} from '@/api/axios';
 import {ImageUri} from '@/types/domain';
 import {colors} from '@/constants/colors';
@@ -28,6 +30,9 @@ function PreviewImageList({
   const handlePressImage = (index: number) => {
     navigation.navigate('ImageZoom', {id: route.params?.id, index});
   };
+
+  const {theme} = useThemeStroe();
+  const styles = styling(theme);
   return (
     <ScrollView horizontal contentContainerStyle={styles.container}>
       {imageUris.map(({uri}, index) => {
@@ -49,7 +54,7 @@ function PreviewImageList({
               <Pressable
                 style={styles.deleteButton}
                 onPress={() => onDelete?.(uri)}>
-                <Ionicons name="close" size={16} color={colors.WHITE} />
+                <Ionicons name="close" size={16} color={colors[theme].WHITE} />
               </Pressable>
             )}
           </Pressable>
@@ -59,25 +64,26 @@ function PreviewImageList({
   );
 }
 
-const styles = StyleSheet.create({
-  imageContainer: {
-    width: 70,
-    height: 70,
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  container: {
-    gap: 15,
-    paddingHorizontal: 15,
-  },
-  deleteButton: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    backgroundColor: colors.BLACK,
-  },
-});
+const styling = (theme: Theme) =>
+  StyleSheet.create({
+    imageContainer: {
+      width: 70,
+      height: 70,
+    },
+    image: {
+      width: '100%',
+      height: '100%',
+    },
+    container: {
+      gap: 15,
+      paddingHorizontal: 15,
+    },
+    deleteButton: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      backgroundColor: colors[theme].BLACK,
+    },
+  });
 
 export default PreviewImageList;

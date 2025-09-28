@@ -1,5 +1,7 @@
 import React from 'react';
+import useThemeStroe, {Theme} from '@/store/theme';
 import CustomButton from '@/components/common/CustomButton';
+
 import {colors} from '@/constants/colors';
 import {useNavigation} from '@react-navigation/native';
 import {AuthStackParamList} from '@/types/navigation';
@@ -17,6 +19,8 @@ type Navigation = StackNavigationProp<AuthStackParamList>;
 
 function AuthHomeScreen() {
   const navigation = useNavigation<Navigation>();
+  const {theme} = useThemeStroe();
+  const styles = styling(theme);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -40,34 +44,35 @@ function AuthHomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+const styling = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+    },
 
-  imageContainer: {
-    flex: 1.5,
-    alignItems: 'center',
-  },
+    imageContainer: {
+      flex: 1.5,
+      alignItems: 'center',
+    },
 
-  image: {
-    width: 200,
-    height: '100%',
-  },
+    image: {
+      width: 200,
+      height: '100%',
+    },
 
-  buttonContainer: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 30,
-    gap: 5,
-  },
+    buttonContainer: {
+      flex: 1,
+      alignItems: 'center',
+      padding: 30,
+      gap: 5,
+    },
 
-  emailText: {
-    textDecorationLine: 'underline',
-    fontWeight: 500,
-    padding: 10,
-    color: colors.BLACK,
-  },
-});
+    emailText: {
+      textDecorationLine: 'underline',
+      fontWeight: 500,
+      padding: 10,
+      color: colors[theme].BLACK,
+    },
+  });
 
 export default AuthHomeScreen;

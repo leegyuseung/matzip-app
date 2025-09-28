@@ -1,5 +1,7 @@
 import React from 'react';
+import useThemeStroe from '@/store/theme';
 import Ionicons from '@react-native-vector-icons/ionicons';
+
 import {colors} from '@/constants/colors';
 import {useNavigation} from '@react-navigation/native';
 import {MainDrawerParamList} from '@/types/navigation';
@@ -13,13 +15,14 @@ interface DrawerButtonProps {
   style?: StyleProp<ViewStyle>;
 }
 
-function DrawerButton({style, color = colors.BLACK}: DrawerButtonProps) {
+function DrawerButton({style, color}: DrawerButtonProps) {
+  const {theme} = useThemeStroe();
   const navigation = useNavigation<Navigation>();
   return (
     <Pressable
       style={[styles.container, style]}
       onPress={() => navigation.openDrawer()}>
-      <Ionicons name="menu" size={25} color={color} />
+      <Ionicons name="menu" size={25} color={color || colors[theme].BLACK} />
     </Pressable>
   );
 }

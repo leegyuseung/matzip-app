@@ -1,4 +1,5 @@
 import React from 'react';
+import useThemeStroe from '@/store/theme';
 
 import {colors} from '@/constants/colors';
 import {
@@ -8,13 +9,11 @@ import {
   View,
 } from 'react-native';
 
-function Indicator({
-  size = 'small',
-  color = colors.GRAY_500,
-}: ActivityIndicatorProps) {
+function Indicator({size = 'small', color}: ActivityIndicatorProps) {
+  const {theme} = useThemeStroe();
   return (
     <View style={styles.container}>
-      <ActivityIndicator size={size} color={color} />
+      <ActivityIndicator size={size} color={color || colors[theme].GRAY_500} />
     </View>
   );
 }

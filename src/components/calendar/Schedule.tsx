@@ -1,4 +1,6 @@
 import React from 'react';
+import useThemeStroe, {Theme} from '@/store/theme';
+
 import {colors} from '@/constants/colors';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 
@@ -9,6 +11,9 @@ interface ScheduleProps {
 }
 
 function Schedule({subTitle, title, onPress}: ScheduleProps) {
+  const {theme} = useThemeStroe();
+  const styles = styling(theme);
+
   return (
     <Pressable style={styles.container} onPress={onPress}>
       <View style={styles.line} />
@@ -25,33 +30,34 @@ function Schedule({subTitle, title, onPress}: ScheduleProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
+const styling = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+    },
 
-  line: {
-    backgroundColor: colors.PINK_700,
-    width: 6,
-    height: 50,
-    marginRight: 8,
-    borderRadius: 20,
-  },
+    line: {
+      backgroundColor: colors[theme].PINK_700,
+      width: 6,
+      height: 50,
+      marginRight: 8,
+      borderRadius: 20,
+    },
 
-  infoContainer: {
-    justifyContent: 'space-evenly',
-  },
+    infoContainer: {
+      justifyContent: 'space-evenly',
+    },
 
-  subTitleText: {
-    color: colors.GRAY_500,
-    fontSize: 13,
-  },
+    subTitleText: {
+      color: colors[theme].GRAY_500,
+      fontSize: 13,
+    },
 
-  titleText: {
-    color: colors.BLACK,
-    fontSize: 16,
-    fontWeight: '600',
-  },
-});
+    titleText: {
+      color: colors[theme].BLACK,
+      fontSize: 16,
+      fontWeight: '600',
+    },
+  });
 
 export default Schedule;

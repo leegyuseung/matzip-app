@@ -1,4 +1,6 @@
 import React, {Ref} from 'react';
+import useThemeStroe, {Theme} from '@/store/theme';
+
 import {colors} from '@/constants/colors';
 import {StyleSheet, Text, TextInput, TextInputProps, View} from 'react-native';
 
@@ -16,11 +18,14 @@ function InputField({
   disabled = false,
   ...props
 }: InputFieldProps) {
+  const {theme} = useThemeStroe();
+  const styles = styling(theme);
+
   return (
     <View>
       <TextInput
         ref={ref}
-        placeholderTextColor={colors.GRAY_500}
+        placeholderTextColor={colors[theme].GRAY_500}
         autoCapitalize="none" // 첫 글자 대문자
         spellCheck={false} //  오타체크
         autoCorrect={false} // 자동완성
@@ -38,38 +43,39 @@ function InputField({
   );
 }
 
-const styles = StyleSheet.create({
-  input: {
-    borderWidth: 1,
-    borderColor: colors.GRAY_200,
-    justifyContent: 'center',
-    height: 50,
-    paddingHorizontal: 10,
-    fontSize: 16,
-    color: colors.BLACK,
-  },
+const styling = (theme: Theme) =>
+  StyleSheet.create({
+    input: {
+      borderWidth: 1,
+      borderColor: colors[theme].GRAY_200,
+      justifyContent: 'center',
+      height: 50,
+      paddingHorizontal: 10,
+      fontSize: 16,
+      color: colors[theme].BLACK,
+    },
 
-  error: {
-    color: colors.RED_500,
-    fontSize: 12,
-    paddingTop: 5,
-  },
+    error: {
+      color: colors[theme].RED_500,
+      fontSize: 12,
+      paddingTop: 5,
+    },
 
-  inputError: {
-    borderWidth: 1,
-    borderColor: colors.RED_300,
-  },
+    inputError: {
+      borderWidth: 1,
+      borderColor: colors[theme].RED_300,
+    },
 
-  multiline: {
-    height: 150,
-    paddingVertical: 10,
-    textAlignVertical: 'top', // 안드로이드 때문에
-  },
+    multiline: {
+      height: 150,
+      paddingVertical: 10,
+      textAlignVertical: 'top', // 안드로이드 때문에
+    },
 
-  disabled: {
-    backgroundColor: colors.GRAY_200,
-    color: colors.GRAY_700,
-  },
-});
+    disabled: {
+      backgroundColor: colors[theme].GRAY_200,
+      color: colors[theme].GRAY_700,
+    },
+  });
 
 export default InputField;

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import useThemeStroe, {Theme} from '@/store/theme';
 import Ionicons from '@react-native-vector-icons/ionicons';
 
 import {baseUrls} from '@/api/axios';
@@ -29,6 +30,8 @@ function ImageCarousel({images, pressedIndex = 0}: ImageCarouselProps) {
   const deviceWidth = Dimensions.get('window').width;
   const [initialIndex, setInitialIndex] = useState(pressedIndex);
   const [page, setPage] = useState(pressedIndex);
+  const {theme} = useThemeStroe();
+  const styles = styling(theme);
 
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const newPage = Math.round(e.nativeEvent.contentOffset.x / deviceWidth);
@@ -41,7 +44,7 @@ function ImageCarousel({images, pressedIndex = 0}: ImageCarouselProps) {
       <Pressable
         style={[styles.backButton, {marginTop: insets.top + 10}]}
         onPress={() => navigation.goBack()}>
-        <Ionicons name="chevron-back" size={30} color={colors.WHITE} />
+        <Ionicons name="chevron-back" size={30} color={colors[theme].WHITE} />
       </Pressable>
 
       <FlatList
@@ -86,46 +89,47 @@ function ImageCarousel({images, pressedIndex = 0}: ImageCarouselProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: colors.BLACK,
-  },
+const styling = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      backgroundColor: colors[theme].BLACK,
+    },
 
-  backButton: {
-    position: 'absolute',
-    left: 20,
-    zIndex: 1,
-    height: 40,
-    width: 40,
-    borderRadius: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    backButton: {
+      position: 'absolute',
+      left: 20,
+      zIndex: 1,
+      height: 40,
+      width: 40,
+      borderRadius: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
 
-  image: {
-    width: '100%',
-    height: '100%',
-  },
+    image: {
+      width: '100%',
+      height: '100%',
+    },
 
-  pageContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    position: 'absolute',
-  },
+    pageContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      position: 'absolute',
+    },
 
-  pageDot: {
-    margin: 4,
-    backgroundColor: colors.GRAY_200,
-    width: 8,
-    height: 8,
-    borderRadius: 8,
-  },
+    pageDot: {
+      margin: 4,
+      backgroundColor: colors[theme].GRAY_200,
+      width: 8,
+      height: 8,
+      borderRadius: 8,
+    },
 
-  currentPageDot: {
-    backgroundColor: colors.PINK_700,
-  },
-});
+    currentPageDot: {
+      backgroundColor: colors[theme].PINK_700,
+    },
+  });
 
 export default ImageCarousel;

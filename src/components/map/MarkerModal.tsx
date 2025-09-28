@@ -1,6 +1,8 @@
 import React from 'react';
+import useThemeStroe, {Theme} from '@/store/theme';
 import useGetPost from '@/hooks/queries/useGetPost';
 import Ionicons from '@react-native-vector-icons/ionicons';
+
 import {baseUrls} from '@/api/axios';
 import {colors} from '@/constants/colors';
 import {getDateWithSeparator} from '@/utils/date';
@@ -25,6 +27,8 @@ interface MarkerModalProps {
 function MarkerModal({markerId, isVisible, hide}: MarkerModalProps) {
   const {data: post, isPending, isError} = useGetPost(markerId);
   const navigation = useNavigation();
+  const {theme} = useThemeStroe();
+  const styles = styling(theme);
 
   if (isPending || isError) {
     return <></>;
@@ -72,7 +76,7 @@ function MarkerModal({markerId, isVisible, hide}: MarkerModalProps) {
                   <Ionicons
                     name="location-outline"
                     size={10}
-                    color={colors.GRAY_500}
+                    color={colors[theme].GRAY_500}
                   />
                   <Text
                     style={styles.addressText}
@@ -93,7 +97,11 @@ function MarkerModal({markerId, isVisible, hide}: MarkerModalProps) {
               </View>
             </View>
             <View style={styles.nextButton}>
-              <Ionicons name="chevron-forward" size={25} color={colors.BLACK} />
+              <Ionicons
+                name="chevron-forward"
+                size={25}
+                color={colors[theme].BLACK}
+              />
             </View>
           </View>
         </Pressable>
@@ -102,94 +110,95 @@ function MarkerModal({markerId, isVisible, hide}: MarkerModalProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
+const styling = (theme: Theme) =>
+  StyleSheet.create({
+    background: {
+      flex: 1,
+      justifyContent: 'flex-end',
+    },
 
-  cardContainer: {
-    backgroundColor: colors.WHITE,
-    margin: 10,
-    borderWidth: 1,
-    borderColor: colors.GRAY_500,
-    borderRadius: 15,
-    boxShadow: '1px 1px 3px rgba(0,0,0,0.3)',
-  },
+    cardContainer: {
+      backgroundColor: colors[theme].WHITE,
+      margin: 10,
+      borderWidth: 1,
+      borderColor: colors[theme].GRAY_500,
+      borderRadius: 15,
+      boxShadow: '1px 1px 3px rgba(0,0,0,0.3)',
+    },
 
-  cardInner: {
-    padding: 20,
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
+    cardInner: {
+      padding: 20,
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
 
-  imageContainer: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-  },
+    imageContainer: {
+      width: 70,
+      height: 70,
+      borderRadius: 35,
+    },
 
-  image: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 35,
-  },
+    image: {
+      width: '100%',
+      height: '100%',
+      borderRadius: 35,
+    },
 
-  emptyImageContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 35,
-    borderColor: colors.GRAY_200,
-  },
+    emptyImageContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderRadius: 35,
+      borderColor: colors[theme].GRAY_200,
+    },
 
-  emptyText: {
-    fontSize: 12,
-    color: colors.GRAY_500,
-  },
+    emptyText: {
+      fontSize: 12,
+      color: colors[theme].GRAY_500,
+    },
 
-  infoContainer: {
-    marginLeft: 15,
-    gap: 5,
-  },
+    infoContainer: {
+      marginLeft: 15,
+      gap: 5,
+    },
 
-  addressText: {
-    color: colors.GRAY_500,
-    fontSize: 10,
-  },
+    addressText: {
+      color: colors[theme].GRAY_500,
+      fontSize: 10,
+    },
 
-  cardAlign: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    cardAlign: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
 
-  addressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 2,
-  },
+    addressContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 2,
+    },
 
-  titleText: {
-    color: colors.BLACK,
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
+    titleText: {
+      color: colors[theme].BLACK,
+      fontSize: 15,
+      fontWeight: 'bold',
+    },
 
-  dateText: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: colors.PINK_700,
-  },
+    dateText: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      color: colors[theme].PINK_700,
+    },
 
-  nextButton: {
-    width: 40,
-    height: 40,
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-  },
-});
+    nextButton: {
+      width: 40,
+      height: 40,
+      alignItems: 'flex-end',
+      justifyContent: 'center',
+    },
+  });
 
 export default MarkerModal;

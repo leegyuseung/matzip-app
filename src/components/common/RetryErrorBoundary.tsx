@@ -1,5 +1,6 @@
 import CustomButton from './CustomButton';
 import React, {PropsWithChildren} from 'react';
+import useThemeStroe, {Theme} from '@/store/theme';
 
 import {colors} from '@/constants/colors';
 import {ErrorBoundary} from 'react-error-boundary';
@@ -8,6 +9,8 @@ import {useQueryErrorResetBoundary} from '@tanstack/react-query';
 
 function RetryErrorBoundary({children}: PropsWithChildren) {
   const {reset} = useQueryErrorResetBoundary();
+  const {theme} = useThemeStroe();
+  const styles = styling(theme);
   return (
     <ErrorBoundary
       onReset={reset}
@@ -30,25 +33,26 @@ function RetryErrorBoundary({children}: PropsWithChildren) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 10,
-    backgroundColor: colors.WHITE,
-  },
+const styling = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 10,
+      backgroundColor: colors[theme].WHITE,
+    },
 
-  titleText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: colors.BLACK,
-  },
+    titleText: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: colors[theme].BLACK,
+    },
 
-  descriptionText: {
-    fontSize: 15,
-    color: colors.GRAY_500,
-  },
-});
+    descriptionText: {
+      fontSize: 15,
+      color: colors[theme].GRAY_500,
+    },
+  });
 
 export default RetryErrorBoundary;
