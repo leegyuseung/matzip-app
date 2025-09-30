@@ -1594,6 +1594,30 @@ PODS:
     - Yoga
   - react-native-vector-icons-fontawesome6 (12.1.0)
   - react-native-vector-icons-ionicons (12.2.0)
+  - react-native-webview (13.16.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - React-NativeModulesApple (0.79.4):
     - glog
     - hermes-engine
@@ -1916,6 +1940,8 @@ PODS:
     - React-logger (= 0.79.4)
     - React-perflogger (= 0.79.4)
     - React-utils (= 0.79.4)
+  - RNAppleAuthentication (2.4.1):
+    - React-Core
   - RNBootSplash (6.3.11):
     - DoubleConversion
     - glog
@@ -2321,6 +2347,7 @@ DEPENDENCIES:
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - "react-native-vector-icons-fontawesome6 (from `../node_modules/@react-native-vector-icons/fontawesome6`)"
   - "react-native-vector-icons-ionicons (from `../node_modules/@react-native-vector-icons/ionicons`)"
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-oscompat (from `../node_modules/react-native/ReactCommon/oscompat`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -2352,6 +2379,7 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -2465,6 +2493,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-vector-icons/fontawesome6"
   react-native-vector-icons-ionicons:
     :path: "../node_modules/@react-native-vector-icons/ionicons"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-oscompat:
@@ -2527,6 +2557,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNAppleAuthentication:
+    :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCMaskedView:
@@ -2596,6 +2628,7 @@ SPEC CHECKSUMS:
   react-native-slider: dcd0321a3c47241b8afc50b4271be675d8dd2e34
   react-native-vector-icons-fontawesome6: 2aed838cc3341d13e8eb0541929a74a16f62348d
   react-native-vector-icons-ionicons: 3a23bfb6ac5e5c44d822f37107afa50718f3cf31
+  react-native-webview: 31e5182717002afb31a4452498e890daf28a77de
   React-NativeModulesApple: 279a49b2ced572badcde3dfb46cf7ebe28287eb1
   React-oscompat: 472a446c740e39ee39cd57cd7bfd32177c763a2b
   React-perflogger: 866cf619b19154e1170f8b6c7c7b73002f949fe4
@@ -2627,6 +2660,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 04be2a00933bf0930cafcc4da1e0760143573d82
   ReactCodegen: 1bcfcb6519fadfb3e0072e27b8ff868b7dfbac64
   ReactCommon: 2bc79208d91eda74edeff759d82c93460b07612f
+  RNAppleAuthentication: b2d8b5ccba86b5b1e55a1a2e858f7ac6d8a21816
   RNBootSplash: 7bae807e5de769a1058a23f93291b6322269bc65
   RNCMaskedView: 3e8d6bf9764b519d077986413882959eafceffbc
   RNGestureHandler: 221ff8aa93eb769e1d174bbb74ccaf254422bef0

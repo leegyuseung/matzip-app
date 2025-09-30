@@ -4,16 +4,19 @@ import {Profile} from '@/types/domain';
 import {numbers} from '@/constants/numbers';
 import {removeHeader, setHeader} from '@/utils/header';
 import {queryKeys, storageKeys} from '@/constants/keys';
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {MutationFunction, useMutation, useQuery} from '@tanstack/react-query';
 import {UseMutationCustomOptions, useQueryCustomOptions} from '@/types/api';
 import {removeEncryptStorage, setEncryptStorage} from '@/utils/encryptStorage';
 import {
+  appleLogin,
   editProfile,
   getAccessToken,
   getProfile,
+  kakaoLogin,
   logout,
   postLogin,
   postSignup,
+  ResponseToken,
 } from '@/api/auth';
 
 function useSignup(mutationOptions?: UseMutationCustomOptions) {
@@ -24,9 +27,12 @@ function useSignup(mutationOptions?: UseMutationCustomOptions) {
   });
 }
 
-function useLogin(mutationOptions?: UseMutationCustomOptions) {
+function useLogin<T>(
+  loginAPI: MutationFunction<ResponseToken, T>,
+  mutationOptions?: UseMutationCustomOptions,
+) {
   return useMutation({
-    mutationFn: postLogin,
+    mutationFn: loginAPI,
     onSuccess: async ({accessToken, refreshToken}) => {
       setHeader('Authorization', `Bearer ${accessToken}`);
       await setEncryptStorage(storageKeys.REFRESH_TOKEN, refreshToken);
@@ -37,6 +43,18 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
     },
     ...mutationOptions,
   });
+}
+
+function useEmailLogin(mutationOptions?: UseMutationCustomOptions) {
+  return useLogin(postLogin, mutationOptions);
+}
+
+function useKakaoLogin(mutationOptions?: UseMutationCustomOptions) {
+  return useLogin(kakaoLogin, mutationOptions);
+}
+
+function useAppleLogin(mutationOptions?: UseMutationCustomOptions) {
+  return useLogin(appleLogin, mutationOptions);
 }
 
 function useGetRefreshToken() {
@@ -103,7 +121,9 @@ function useUpdateProfile(mutationOptions?: UseMutationCustomOptions) {
 
 function useAuth() {
   const signupMutation = useSignup();
-  const loginMutation = useLogin();
+  const loginMutation = useEmailLogin();
+  const kakaoLoginMutation = useKakaoLogin();
+  const appleLoginMutation = useAppleLogin();
   const refreshTokenQuery = useGetRefreshToken();
   const {data, isSuccess: isLogin} = useGetProfile({
     enabled: refreshTokenQuery.isSuccess, // enabled가 True일 때만 useGet 프로필이 호출
@@ -123,6 +143,8 @@ function useAuth() {
     isLogin,
     logoutMutation,
     profileMutation,
+    kakaoLoginMutation,
+    appleLoginMutation,
   };
 }
 

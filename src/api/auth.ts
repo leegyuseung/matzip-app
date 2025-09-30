@@ -15,7 +15,7 @@ async function postSignup({email, password}: RequestUser): Promise<void> {
   });
 }
 
-type ResponseToken = {
+export type ResponseToken = {
   accessToken: string;
   refreshToken: string;
 };
@@ -32,6 +32,25 @@ async function postLogin({
 
   return data;
 }
+
+async function kakaoLogin(token: string): Promise<ResponseToken> {
+  const {data} = await axiosInstance.post('/auth/oauth/kakao', {token});
+
+  return data;
+}
+
+export type RequestAppleIdentity = {
+  identityToken: string;
+  appId: string;
+  nickname: string | null;
+};
+
+const appleLogin = async (
+  body: RequestAppleIdentity,
+): Promise<ResponseToken> => {
+  const {data} = await axiosInstance.post('/auth/oauth/apple', body);
+  return data;
+};
 
 // 로그인 정보
 async function getProfile(): Promise<Profile> {
@@ -65,4 +84,13 @@ async function editProfile(body: RequestProfile): Promise<Profile> {
   return data;
 }
 
-export {postSignup, postLogin, getProfile, getAccessToken, logout, editProfile};
+export {
+  postSignup,
+  postLogin,
+  getProfile,
+  getAccessToken,
+  logout,
+  editProfile,
+  kakaoLogin,
+  appleLogin,
+};

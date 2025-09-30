@@ -2,6 +2,7 @@ import useThemeStroe from '@/store/theme';
 import LoginScreen from '@/screens/auth/LoginScreen';
 import SignupScreen from '@/screens/auth/SignupScreen';
 import AuthHomeScreen from '@/screens/auth/AuthHomeScreen';
+import KakaoLoginScreen from '@/screens/auth/KakaoLoginScreen';
 
 import {colors} from '@/constants/colors';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -44,6 +45,11 @@ function AuthStack() {
         name="Signup"
         component={SignupScreen}
         options={{title: '회원가입'}}
+      />
+      <Stack.Screen
+        name="KakaoLogin"
+        component={KakaoLoginScreen}
+        options={{title: '카카오 로그인'}}
       />
     </Stack.Navigator>
   );
